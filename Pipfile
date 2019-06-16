@@ -7,6 +7,7 @@ name = "pypi"
 black = "==19.3b0"
 django = "*"
 social-auth-app-django = "*"
+prettyconf = "*"
 
 [dev-packages]
 pre-commit = "*"

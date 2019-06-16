@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 
 import os
 
+from prettyconf import config
+
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "social_django",
+    "core",
 ]
 
 MIDDLEWARE = [
@@ -56,7 +59,7 @@ ROOT_URLCONF = "facebook_auth_django.urls"
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [],
+        "DIRS": [os.path.join(BASE_DIR, "facebook_auth_django/templates")],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -117,3 +120,21 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = "/static/"
+
+LOGIN_URL = "login"
+LOGIN_REDIRECT_URL = "home"
+LOGOUT_URL = "logout"
+LOGOUT_REDIRECT_URL = "login"
+
+SOCIAL_AUTH_FACEBOOK_KEY = config("SOCIAL_AUTH_FACEBOOK_KEY")
+SOCIAL_AUTH_FACEBOOK_SECRET = config("SOCIAL_AUTH_FACEBOOK_SECRET")
+SOCIAL_AUTH_FACEBOOK_SCOPE = ["email", "user_link"]  # add this
+SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {  # add this
+    "fields": "id, name, email, picture.type(large), link"
+}
+SOCIAL_AUTH_FACEBOOK_EXTRA_DATA = [  # add this
+    ("name", "name"),
+    ("email", "email"),
+    ("picture", "picture"),
+    ("link", "profile_url"),
+]
